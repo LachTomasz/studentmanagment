@@ -1,5 +1,10 @@
 package com.lach.studentmanagment.student;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lach.studentmanagment.course.Course;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Student {
@@ -8,13 +13,15 @@ public class Student {
     private  final String firstName;
     private final String lastName;
     private final String indexNumber;
+//    3. Dodaj do Studenta liste courseIds przechowujaca kursy na ktore on jest zapisany
+    private final Map<UUID, Course> courseIds = new HashMap<>();
 
-    public Student(String firstName, String lastName, String indexNumber) {
+    public Student(@JsonProperty String firstName, @JsonProperty String lastName, @JsonProperty String indexNumber) {
         this(UUID.randomUUID(), firstName = firstName, lastName = lastName, indexNumber = indexNumber);
 
     }
 
-    public Student(UUID id, String firstName, String lastName, String indexNumber) {
+    public Student(@JsonProperty UUID id, @JsonProperty String firstName, @JsonProperty String lastName, @JsonProperty String indexNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,6 +42,10 @@ public class Student {
 
     public String getIndexNumber() {
         return indexNumber;
+    }
+
+    public Map<UUID, Course> getCourseIds() {
+        return courseIds;
     }
 
     @Override

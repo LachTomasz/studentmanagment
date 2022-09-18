@@ -42,6 +42,6 @@ public class CourseController {
         if(courseName!=null) return idToCourse.values().stream()
                 .filter((course) -> course.getCourseName().equals(courseName))
                 .collect(Collectors.toList());
-    else return idToCourse.values();
+        else return idToCourse.values().stream().toList();
     }
 }
