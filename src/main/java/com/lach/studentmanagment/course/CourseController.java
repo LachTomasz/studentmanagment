@@ -1,5 +1,7 @@
 package com.lach.studentmanagment.course;
 
+import com.lach.studentmanagment.student.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -13,10 +15,20 @@ public class CourseController {
 
     Map<UUID, Course> idToCourse = new HashMap<>();
 
+    private final StudentService studentService;
+
+    @Autowired
+    public CourseController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+
     @PostMapping("/courses")
     public Course addCourse(@RequestBody Course course){
-        idToCourse.put(course.getCourseId(), course);
-        return idToCourse.get(course.getCourseId());
+        Course saveCourse = studentService.addCourses(course);
+//        idToCourse.put(course.getCourseId(), course);
+//        return idToCourse.get(course.getCourseId());
+        return saveCourse;
     }
 
     @PutMapping("/courses")
@@ -42,6 +54,6 @@ public class CourseController {
         if(courseName!=null) return idToCourse.values().stream()
                 .filter((course) -> course.getCourseName().equals(courseName))
                 .collect(Collectors.toList());
-    else return idToCourse.values();
+        else return idToCourse.values().stream().toList();
     }
 }

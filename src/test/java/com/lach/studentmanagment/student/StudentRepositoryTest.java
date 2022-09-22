@@ -1,11 +1,15 @@
 package com.lach.studentmanagment.student;
 
+import com.lach.studentmanagment.course.Course;
+import com.lach.studentmanagment.course.CourseRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class StudentRepositoryTest {
 
@@ -23,12 +27,39 @@ class StudentRepositoryTest {
     }
 
     @Test
+    void shouldSaveStudentWithMock() {
+        //Given
+        StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
+        Student student = new Student("John", "Kowalski", "12343");
+        when(studentRepository.save(student)).thenReturn(student);
+
+        //When
+        Student result = studentRepository.save(student);
+
+        //Then
+        Assertions.assertEquals(student, result);
+    }
+    @Test
     void shouldFindStudent() {
         //Given
         Student student1 = new Student("John", "Kowalski", "12343");
         Student student2 = new Student("John", "Nowak", "12345");
         Map<UUID, Student> studentMap = Map.of(student1.getId(), student1, student2.getId(), student2);
         StudentRepository studentRepository = new StudentRepository(studentMap);
+
+        //When
+        Student result = studentRepository.find(student1.getId());
+
+        //Then
+        Assertions.assertEquals(student1, result);
+    }
+
+    @Test
+    void shouldFindStudentWithMock() {
+        //Given
+        StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
+        Student student1 = new Student("John", "Kowalski", "12343");
+        when(studentRepository.find(student1.getId())).thenReturn(student1);
 
         //When
         Student result = studentRepository.find(student1.getId());
@@ -55,6 +86,19 @@ class StudentRepositoryTest {
 
         //Then
         Assertions.assertEquals(updateStudent, result);
+    }
+    @Test
+    void shouldUpdateStudentWithMock() {
+        //Given
+        StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
+        Student student1 = new Student("John", "Kowalski", "12343");
+        when(studentRepository.update(student1)).thenReturn(student1);
+
+        //When
+        Student result = studentRepository.update(student1);
+
+        //Then
+        Assertions.assertEquals(student1, result);
     }
 
     @Test
@@ -123,6 +167,7 @@ class StudentRepositoryTest {
 
         //Then
         Assertions.assertEquals(List.of(student1, student2, student3), result);
+//        Assertions.assertEquals(studentMap, result);
     }
 }
 
