@@ -20,7 +20,6 @@ public class Student {
 //    @JsonCreator
     public Student(@JsonProperty String firstName, @JsonProperty String lastName, @JsonProperty String indexNumber) {
         this(UUID.randomUUID(), firstName = firstName, lastName = lastName, indexNumber = indexNumber);
-
     }
 
     @JsonCreator //to musi byc i zawsze tylko jedna na klasę
