@@ -123,6 +123,7 @@ class StudentRepositoryTest {
 
         //Then
         Assertions.assertEquals(List.of(student1, student2, student3), result);
+//        Assertions.assertEquals(studentMap, result);
     }
 }
 

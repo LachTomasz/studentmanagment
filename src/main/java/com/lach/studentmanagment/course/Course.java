@@ -1,5 +1,6 @@
 package com.lach.studentmanagment.course;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
@@ -10,7 +11,9 @@ public class Course {
     private final UUID courseId;
     private final String courseName;
 
+
     public Course(@JsonProperty String courseName) {this(UUID.randomUUID(), courseName);}
+    @JsonCreator //to musi byc i zawsze tylko jedna na klasę, zawsze pisz nad konstruktorem ktory ma najwiecej parametrów wywolania
     public Course(@JsonProperty UUID courseId, @JsonProperty String courseName) {
         this.courseId = courseId;
         this.courseName = courseName;

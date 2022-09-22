@@ -32,4 +32,49 @@ class StudentControllerTest {
         Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
         Assertions.assertEquals(result.getBody(), student1);
     }
+
+    @Test
+    void shouldUpdateStudent() {
+        //Given
+
+        //When
+
+        //Then
+    }
+
+    @Test
+    void shouldDeleteStudent() {
+        //Given
+
+        //When
+
+        //Then
+    }
+
+    @Test
+    void shouldGetStudent() {
+        //Given
+
+        //When
+
+        //Then
+    }
+
+    @Test
+    void shouldGetAllStudents() {
+        //Given
+
+        //When
+
+        //Then
+    }
+
+    @Test
+    void shouldGetAllStudentsByName(){
+        //Given
+
+        //When
+
+        //Then
+    }
 }
