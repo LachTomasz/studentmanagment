@@ -1,8 +1,10 @@
 package com.lach.studentmanagment.student;
 
+import com.lach.studentmanagment.course.Course;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class StudentRepository {
@@ -35,17 +37,23 @@ public class StudentRepository {
     public void delete(UUID id){idToStudent.remove(id);}
 
     //findAll - returns list of all students with that same first name
-    public List<Student> findAll(String firstName){//todo przerob na stream
-        List<Student> studentList = new LinkedList<>();
-        for (Student student: idToStudent.values()) {
-            if(student.getFirstName().equals(firstName)){
-                studentList.add(student);
-            }
-        }
-        return studentList;
+    public List<Student> findAll(String firstName){
+//        List<Student> studentList = new LinkedList<>();
+//        for (Student student: idToStudent.values()) {
+//            if(student.getFirstName().equals(firstName)){
+//                studentList.add(student);
+//            }
+//        }
+//        return studentList;
+        return idToStudent.values().stream()
+                .filter((student) -> student.getFirstName().equals(firstName))
+                .collect(Collectors.toList());
     }
 
     //Overload findAll - returns list of all students in repository
-    public List<Student> findAll(){return new LinkedList<>(idToStudent.values());}
+    public List<Student> findAll(){
+//        return new LinkedList<>(idToStudent.values());
+        return idToStudent.values().stream().toList();
+    }
 
 }
