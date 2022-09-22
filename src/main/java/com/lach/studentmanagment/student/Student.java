@@ -1,5 +1,6 @@
 package com.lach.studentmanagment.student;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lach.studentmanagment.course.Course;
 
@@ -14,13 +15,15 @@ public class Student {
     private final String lastName;
     private final String indexNumber;
 //    3. Dodaj do Studenta liste courseIds przechowujaca kursy na ktore on jest zapisany
-    private final Map<UUID, Course> courseIds = new HashMap<>();
+//    private final Map<UUID, Course> courseIds = new HashMap<>();
 
+//    @JsonCreator
     public Student(@JsonProperty String firstName, @JsonProperty String lastName, @JsonProperty String indexNumber) {
         this(UUID.randomUUID(), firstName = firstName, lastName = lastName, indexNumber = indexNumber);
 
     }
 
+    @JsonCreator //to musi byc i zawsze tylko jedna na klasę
     public Student(@JsonProperty UUID id, @JsonProperty String firstName, @JsonProperty String lastName, @JsonProperty String indexNumber) {
         this.id = id;
         this.firstName = firstName;
@@ -44,9 +47,10 @@ public class Student {
         return indexNumber;
     }
 
-    public Map<UUID, Course> getCourseIds() {
-        return courseIds;
-    }
+//    3. Dodaj do Studenta liste courseIds przechowujaca kursy na ktore on jest zapisany
+//    public Map<UUID, Course> getCourseIds() {
+//        return courseIds;
+//    }
 
     @Override
     public String toString() {
