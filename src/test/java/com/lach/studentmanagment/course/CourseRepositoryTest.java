@@ -1,7 +1,10 @@
 package com.lach.studentmanagment.course;
 
+import com.lach.studentmanagment.student.Student;
+import com.lach.studentmanagment.student.StudentRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class CourseRepositoryTest {
 
@@ -17,6 +21,20 @@ class CourseRepositoryTest {
         //Given
         CourseRepository courseRepository = new CourseRepository(new HashMap<>());
         Course course = new Course("Math");
+
+        //When
+        Course result = courseRepository.save(course);
+
+        //Then
+        Assertions.assertEquals(course, result);
+    }
+
+    @Test
+    void shouldSaveCourseWithMock() {
+        //Given
+        CourseRepository courseRepository = Mockito.mock(CourseRepository.class);
+        Course course = new Course("Fizyka");
+        when(courseRepository.save(course)).thenReturn(course);
 
         //When
         Course result = courseRepository.save(course);
@@ -77,6 +95,20 @@ class CourseRepositoryTest {
 
         //Then
         Assertions.assertEquals(course1,result);
+    }
+
+    @Test
+    void shouldFindStudentWithMock() {
+        //Given
+        CourseRepository courseRepository = Mockito.mock(CourseRepository.class);
+        Course course = new Course ("Fizyka");
+        when(courseRepository.find(course.getCourseId())).thenReturn(course);
+
+        //When
+        Course result = courseRepository.find(course.getCourseId());
+
+        //Then
+        Assertions.assertEquals(course, result);
     }
 
     @Test
