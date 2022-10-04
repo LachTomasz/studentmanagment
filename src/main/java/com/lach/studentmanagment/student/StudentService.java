@@ -25,6 +25,7 @@ public class StudentService {
     // zamiast hashMap ktore sa tam obecnie
 
     public Course addCourses(Course course) {
+
         return courseRepository.save(course);
     }
 
