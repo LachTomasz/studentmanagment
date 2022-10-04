@@ -4,20 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lach.studentmanagment.course.Course;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Student {
 
     private final UUID id;
-    private  final String firstName;
+    private final String firstName;
     private final String lastName;
     private final String indexNumber;
-//    3. Dodaj do Studenta liste courseIds przechowujaca kursy na ktore on jest zapisany
-//    private final Map<UUID, Course> courseIds = new HashMap<>();
+    private final List<Course> courseIds = new ArrayList<>();
 
-//    @JsonCreator
     public Student(@JsonProperty String firstName, @JsonProperty String lastName, @JsonProperty String indexNumber) {
         this(UUID.randomUUID(), firstName = firstName, lastName = lastName, indexNumber = indexNumber);
     }
@@ -46,10 +42,7 @@ public class Student {
         return indexNumber;
     }
 
-//    3. Dodaj do Studenta liste courseIds przechowujaca kursy na ktore on jest zapisany
-//    public Map<UUID, Course> getCourseIds() {
-//        return courseIds;
-//    }
+    public List<Course> getCourseIds() { return courseIds; }
 
     @Override
     public String toString() {
@@ -68,18 +61,20 @@ public class Student {
 
         Student student = (Student) o;
 
-        if (!id.equals(student.id)) return false;
-        if (!firstName.equals(student.firstName)) return false;
-        if (!lastName.equals(student.lastName)) return false;
-        return indexNumber.equals(student.indexNumber);
+        if (!Objects.equals(id, student.id)) return false;
+        if (!Objects.equals(firstName, student.firstName)) return false;
+        if (!Objects.equals(lastName, student.lastName)) return false;
+        if (!Objects.equals(indexNumber, student.indexNumber)) return false;
+        return courseIds != null ? courseIds.equals(student.courseIds) : student.courseIds == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
-        result = 31 * result + indexNumber.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (indexNumber != null ? indexNumber.hashCode() : 0);
+        result = 31 * result + (courseIds != null ? courseIds.hashCode() : 0);
         return result;
     }
 }

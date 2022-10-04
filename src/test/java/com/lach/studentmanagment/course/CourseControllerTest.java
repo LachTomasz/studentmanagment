@@ -103,7 +103,7 @@ class CourseControllerTest {
 
         //Then
         Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
-        Assertions.assertArrayEquals(result.getBody(), idToCourses);
+        Assertions.assertEquals(idToCourses, result.getBody());
     }
 
     @Test
@@ -127,6 +127,6 @@ class CourseControllerTest {
 
         //Then
         Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
-        Assertions.assertArrayEquals(result.getBody(), courseBySameName);
+        Assertions.assertEquals(courseBySameName, result.getBody());
     }
 }
