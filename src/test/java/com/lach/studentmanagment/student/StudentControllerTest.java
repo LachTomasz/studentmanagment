@@ -1,10 +1,7 @@
 package com.lach.studentmanagment.student;
 
-import com.lach.studentmanagment.course.Course;
-import com.lach.studentmanagment.course.CourseRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-
-import static org.mockito.Mockito.when;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,34 +25,69 @@ class StudentControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+//    @Test
+//    void shouldAddStudent() {
+//        //Given
+//        String url = "http://localhost:" + port + "/students_OLD";
+//        Student student1 = new Student("Tomek", "Lach", "12546");
+//
+//        //When
+//        ResponseEntity<Student> result = restTemplate.postForEntity(url, student1, Student.class);
+//
+//        //Then
+//        Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
+//        Assertions.assertEquals(result.getBody(), student1);
+//    }
+
+
     @Test
     void shouldAddStudent() {
         //Given
         String url = "http://localhost:" + port + "/students";
-        Student student1 = new Student("Tomek", "Lach", "12546");
+        StudentCreateRequest student1 = new StudentCreateRequest("Tomek", "Lach", "12546");
 
         //When
-        ResponseEntity<Student> result = restTemplate.postForEntity(url, student1, Student.class);
+        ResponseEntity<StudentResponse> result = restTemplate.postForEntity(url, student1, StudentResponse.class);
 
         //Then
         Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
-        Assertions.assertEquals(result.getBody(), student1);
+        Assertions.assertEquals(new StudentResponse(student1.getLastName(),Optional.empty()), result.getBody());
+        result.getBody().getPhoneNumber().ifPresent(phoneNumber -> System.out.println(phoneNumber));
     }
 
+    //    @Test
+//    void shouldUpdateStudent() {
+//        //Given
+//        String url = "http://localhost:" + port + "/students";
+//        Student student1 = new Student("Tomek", "Lach", "12546");
+//        restTemplate.postForEntity(url, student1, Student.class);
+//        Student updateStudent = new Student(student1.getId(), "Tomek", "Łach", "12546");
+//
+//        //When
+//        ResponseEntity<Student> result = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(updateStudent), Student.class, updateStudent);
+//
+//        //Then
+//        Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
+//        Assertions.assertEquals(updateStudent, result.getBody());
+//    }
     @Test
-    void shouldUpdateStudent() {
+    void shouldUpdateStudent() {//A Co Z ID z repositorium??
         //Given
         String url = "http://localhost:" + port + "/students";
         Student student1 = new Student("Tomek", "Lach", "12546");
         restTemplate.postForEntity(url, student1, Student.class);
-        Student updateStudent = new Student(student1.getId(), "Tomek", "Łach", "12546");
+
+        String studentId =  student1.getId().toString();
+        String updateUrl = "http://localhost:" + port + "/students" + studentId;
+        StudentCreateRequest updateStudent = new StudentCreateRequest("Tomek", "Łach", "12546");
 
         //When
-        ResponseEntity<Student> result = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(updateStudent), Student.class, updateStudent);
+        ResponseEntity<StudentResponse> result = restTemplate.exchange(updateUrl, HttpMethod.PUT, new HttpEntity<>(updateStudent), StudentResponse.class, updateStudent);
 
         //Then
         Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
-        Assertions.assertEquals(updateStudent, result.getBody());
+        Assertions.assertEquals(new StudentResponse(updateStudent.getLastName(), Optional.empty()), result.getBody());
+        result.getBody().getPhoneNumber().ifPresent(phoneNumber -> System.out.println(phoneNumber));
     }
 
     @Test
@@ -99,7 +131,7 @@ class StudentControllerTest {
         restTemplate.postForEntity(url, student1, Student.class);
         restTemplate.postForEntity(url, student2, Student.class);
         restTemplate.postForEntity(url, student3, Student.class);
-        Student[] idToCourses = new Student[]{student1,student2,student3};
+        Student[] idToCourses = new Student[]{student1, student2, student3};
 
         //When
         ResponseEntity<Student[]> result = restTemplate.getForEntity(url, Student[].class);
@@ -110,7 +142,7 @@ class StudentControllerTest {
     }
 
     @Test
-    void shouldGetAllStudentsByName(){
+    void shouldGetAllStudentsByName() {
         //Given
         String url = "http://localhost:" + port + "/students";
         URI uri = UriComponentsBuilder.fromHttpUrl(url).queryParam("lastName", "Lach").build().toUri();
@@ -121,7 +153,7 @@ class StudentControllerTest {
         restTemplate.postForEntity(url, student1, Student.class);
         restTemplate.postForEntity(url, student2, Student.class);
         restTemplate.postForEntity(url, student3, Student.class);
-        Student[] idToCourses = new Student[]{student1,student3};
+        Student[] idToCourses = new Student[]{student1, student3};
 
         //When
         ResponseEntity<Student[]> result = restTemplate.getForEntity(uri, Student[].class);

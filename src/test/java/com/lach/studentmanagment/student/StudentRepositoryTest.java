@@ -53,6 +53,29 @@ class StudentRepositoryTest {
     }
 
     @Test
+    void shouldFindStudentWithOptional() {
+        //Given
+        Student student1 = new Student("John", "Kowalski", "12343");
+        Student student2 = new Student("John", "Nowak", "12345");
+        Map<UUID, Student> studentMap = Map.of(student1.getId(), student1, student2.getId(), student2);
+        StudentRepository studentRepository = new StudentRepository(studentMap);
+
+        //When
+        Optional<Student> result = studentRepository.findWithOutNull(student1.getId());
+
+        //Then
+//        Assertions.assertEquals(student1, result);
+        Assertions.assertTrue(result.isPresent());
+        Assertions.assertEquals(student1, result.get());//get zwraca zawartość Optionala (Wrapera)
+        /**/
+        result.ifPresent(student -> System.out.println(student));
+        Student resultMethodOrElseThroew = result.orElseThrow();
+        Optional<String> FeldStudentObject = result.map(student -> student.getFirstName());
+    }
+
+
+
+    @Test
     void shouldFindStudentWithMock() {
         //Given
         StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
