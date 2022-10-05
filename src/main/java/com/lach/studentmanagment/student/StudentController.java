@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 public class StudentController {
@@ -24,6 +22,36 @@ public class StudentController {
         Student saveStudent = studentService.addStudent(student);
         return saveStudent;
     }
+
+
+
+    @PostMapping("/students2")
+    public StudentResponse addStudent2(@RequestBody StudentCreateRequest studentCreateRequest) {
+//        idToStudent.put(student.getId(), student);
+//        return idToStudent.get(student.getId());
+
+
+        Student student =new Student(studentCreateRequest.firstName, studentCreateRequest.lastName, studentCreateRequest.indexNumber);
+        Student saveStudent = studentService.addStudent(student);
+        return new StudentResponse(saveStudent.getFirstName(), Optional.empty());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @PutMapping("/students")
     public Student updateStudent(@RequestBody Student student) {

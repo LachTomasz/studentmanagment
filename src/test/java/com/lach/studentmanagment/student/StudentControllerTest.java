@@ -1,10 +1,7 @@
 package com.lach.studentmanagment.student;
 
-import com.lach.studentmanagment.course.Course;
-import com.lach.studentmanagment.course.CourseRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,8 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-
-import static org.mockito.Mockito.when;
+import java.util.Optional;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,6 +37,26 @@ class StudentControllerTest {
         Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
         Assertions.assertEquals(result.getBody(), student1);
     }
+
+
+    @Test
+    void shouldAddStudent2() {
+        //Given
+        String url = "http://localhost:" + port + "/students2";
+        StudentCreateRequest student1 = new StudentCreateRequest("Tomek", "Lach", "12546");
+
+
+        //When
+        ResponseEntity<StudentResponse> result = restTemplate.postForEntity(url, student1, StudentResponse.class);
+
+        //Then
+        Assertions.assertTrue(result.getStatusCode().is2xxSuccessful());
+        Assertions.assertEquals(result.getBody(), new StudentResponse(student1.firstName, Optional.empty()));
+
+        result.getBody().phoneNumper.ifPresent(phoneNumber -> System.out.println(phoneNumber));
+    }
+
+
 
     @Test
     void shouldUpdateStudent() {

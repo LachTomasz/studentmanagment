@@ -129,10 +129,11 @@ class StudentServiceTest {
         studentService.addCourses(course1);
 
         //When
-        studentService.deleteStudent(course1.getCourseId());
+        studentService.deleteCourse(course1.getCourseId());
 
         //Then
         Assertions.assertNull(studentService.findCourse(course1.getCourseId()));
+        Mockito.verify(courseRepository).delete(course1.getCourseId());//tak testuje metody void
     }
 
     @Test
