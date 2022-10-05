@@ -1,14 +1,11 @@
 package com.lach.studentmanagment.student;
 
-import com.lach.studentmanagment.course.Course;
-import com.lach.studentmanagment.course.CourseRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class StudentRepositoryTest {
@@ -39,6 +36,7 @@ class StudentRepositoryTest {
         //Then
         Assertions.assertEquals(student, result);
     }
+
     @Test
     void shouldFindStudent() {
         //Given
@@ -87,6 +85,7 @@ class StudentRepositoryTest {
         //Then
         Assertions.assertEquals(updateStudent, result);
     }
+
     @Test
     void shouldUpdateStudentWithMock() {
         //Given
@@ -111,6 +110,20 @@ class StudentRepositoryTest {
         studentMap.put(student1.getId(), student1);
         studentMap.put(student2.getId(), student2);
         StudentRepository studentRepository = new StudentRepository(studentMap);
+
+        //When
+        studentRepository.delete(student1.getId());
+
+        //Then
+        Assertions.assertNull(studentRepository.find(student1.getId()));
+    }
+
+    @Test
+    void shouldDeleteStudentWithMock() {
+        //Given
+        StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
+        Student student1 = new Student("John", "Kowalski", "12343");
+        studentRepository.save(student1);
 
         //When
         studentRepository.delete(student1.getId());
@@ -145,6 +158,26 @@ class StudentRepositoryTest {
     }
 
     @Test
+    void shouldFindAllStudentsByNameWithMock() {
+        //Given
+        Student student1 = new Student("John", "Nowak", "12345");
+        Student student2 = new Student("John", "Nowak", "12346");
+
+        List<Student> studentMap = new ArrayList<>();
+        studentMap.add(student1);
+        studentMap.add(student2);
+
+        StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
+        when(studentRepository.findAll("John")).thenReturn(studentMap);
+
+        //When
+        List<Student> result = studentRepository.findAll("John");
+
+        //Then
+        Assertions.assertEquals(studentMap, result);
+    }
+
+    @Test
     void shouldFindAllStudents() {
         //Given
         Student student1 = new Student("Janek", "Kowalski", "12343");
@@ -156,9 +189,9 @@ class StudentRepositoryTest {
         studentMap.put(student1.getId(), student1);
         studentMap.put(student2.getId(), student2);
         studentMap.put(student3.getId(), student3);*/
-         Map<UUID, Student> studentMap = Map.of(student1.getId(), student1,
-                                                student2.getId(), student2,
-                                                student3.getId(), student3);
+        Map<UUID, Student> studentMap = Map.of(student1.getId(), student1,
+                student2.getId(), student2,
+                student3.getId(), student3);
 
         StudentRepository studentRepository = new StudentRepository(studentMap);
 
@@ -169,7 +202,30 @@ class StudentRepositoryTest {
         Assertions.assertEquals(List.of(student1, student2, student3), result);
 //        Assertions.assertEquals(studentMap, result);
     }
+
+    @Test
+    void shouldFindAllStudentsWithMock() {
+        //Given
+        Student student1 = new Student("Janek", "Kowalski", "12343");
+        Student student2 = new Student("John", "Nowak", "12345");
+        Student student3 = new Student("John", "Nowak", "12346");
+
+        List<Student> studentMap = new ArrayList<>();
+        studentMap.add(student1);
+        studentMap.add(student2);
+        studentMap.add(student3);
+
+        StudentRepository studentRepository = Mockito.mock(StudentRepository.class);
+        when(studentRepository.findAll()).thenReturn(studentMap);
+
+        //When
+        List<Student> result = studentRepository.findAll();
+
+        //Then
+        Assertions.assertEquals(studentMap, result);
+    }
 }
+
 
 //ctrl +w zaznaczam sekcje;
 //        ctrl+alt+v extrachuje zmienna
