@@ -1,21 +1,23 @@
 package com.lach.studentmanagment.student;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 public class StudentCreateRequest {
 
-    private final Optional<UUID> id;
     private final String firstName;
     private final String lastName;
     private final String indexNumber;
 
-    public StudentCreateRequest(String firstName, String lastName, String indexNumber) {
+    @JsonCreator
+    public StudentCreateRequest(@JsonProperty String firstName, @JsonProperty String lastName, @JsonProperty String indexNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.indexNumber = indexNumber;
-        id = Optional.empty();
     }
 
     public String getFirstName() {
@@ -30,13 +32,10 @@ public class StudentCreateRequest {
         return indexNumber;
     }
 
-    public Optional<UUID> getId() { return id; }
-
     @Override
     public String toString() {
         return "StudentCreateRequest{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", indexNumber='" + indexNumber + '\'' +
                 '}';
@@ -49,16 +48,14 @@ public class StudentCreateRequest {
 
         StudentCreateRequest that = (StudentCreateRequest) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(firstName, that.firstName)) return false;
-        if (!Objects.equals(lastName, that.lastName)) return false;
-        return Objects.equals(indexNumber, that.indexNumber);
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        return indexNumber != null ? indexNumber.equals(that.indexNumber) : that.indexNumber == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        int result = firstName != null ? firstName.hashCode() : 0;
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (indexNumber != null ? indexNumber.hashCode() : 0);
         return result;

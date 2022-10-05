@@ -65,8 +65,8 @@ public class StudentService {
         studentRepository.delete(studentId);
     }
 
-    public List<Student> findAllStudent(String firstName) {
-        return studentRepository.findAll(firstName);
+    public List<Student> findAllStudent(String lastName) {
+        return studentRepository.findAll(lastName);
     }
 
     public List<Student> findAllStudent() {

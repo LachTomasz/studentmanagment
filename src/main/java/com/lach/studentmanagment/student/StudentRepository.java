@@ -41,23 +41,15 @@ public class StudentRepository {
     //delete - remove instance of object Student of ID number
     public void delete(UUID id){idToStudent.remove(id);}
 
-    //findAll - returns list of all students with that same first name
-    public List<Student> findAll(String firstName){
-//        List<Student> studentList = new LinkedList<>();
-//        for (Student student: idToStudent.values()) {
-//            if(student.getFirstName().equals(firstName)){
-//                studentList.add(student);
-//            }
-//        }
-//        return studentList;
+    //findAll - returns list of all students with that same last name
+    public List<Student> findAll(String lastName){
         return idToStudent.values().stream()
-                .filter((student) -> student.getFirstName().equals(firstName))
+                .filter((student) -> student.getLastName().equals(lastName))
                 .collect(Collectors.toList());
     }
 
     //Overload findAll - returns list of all students in repository
     public List<Student> findAll(){
-//        return new LinkedList<>(idToStudent.values());
         return idToStudent.values().stream().toList();
     }
 
